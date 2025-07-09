@@ -1,0 +1,18 @@
+
+{
+  "compilerOptions": {
+    "target": "es2022",                  /* Define a versão do JavaScript de saída. 'es2022' é bom para Node.js moderno. */
+    "module": "commonjs",                 /* Define o sistema de módulos para o código compilado. 'commonjs' é o padrão do Node.js. */
+    "lib": ["es2022"],                    /* Inclui as declarações de tipo para APIs padrão do JavaScript. */
+    "outDir": "./dist",                   /* Onde os arquivos JavaScript compilados serão salvos. */
+    "rootDir": "./src",                   /* Onde estão seus arquivos TypeScript. */
+    "strict": true,                       /* Ativa um conjunto de verificações de tipo rigorosas. Altamente recomendado. */
+    "esModuleInterop": true,              /* Habilita a interoperabilidade entre módulos CommonJS e ES. */
+    "skipLibCheck": true,                 /* Pula a verificação de tipo de arquivos de declaração (.d.ts) de bibliotecas. */
+    "forceConsistentCasingInFileNames": true, /* Garante que as referências aos arquivos usam o mesmo casing. */
+    "resolveJsonModule": true,            /* Permite importar arquivos .json diretamente. */
+    "allowJs": true                       /* Permite que arquivos .js também sejam parte do seu projeto TypeScript. */
+  },
+  "include": ["src/**/*.ts"],             /* Inclui todos os arquivos .ts dentro da pasta src para compilação. */
+  "exclude": ["node_modules", "dist"]     /* Exclui as pastas node_modules e dist da compilação. */
+}

@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Bank {
+  id           String        @id @default(uuid())
+  name         String
+  transactions Transaction[]
+}
+
+model Category {
+  id           String        @id @default(uuid())
+  name         String
+  icon         String
+  transactions Transaction[]
+}
+
+model Transaction {
+  id         String   @id @default(uuid())
+  description String
+  type        String
+  amount      Float
+  bankId      String
+  bank        Bank     @relation(fields: [bankId], references: [id])
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  date        DateTime
+}
