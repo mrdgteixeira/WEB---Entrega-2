@@ -6,5 +6,7 @@ export async function bankRoutes(fastify: FastifyInstance) {
 
   fastify.post('/', BankController.create)
 
+  fastify.patch('/:id', BankController.patch)
+
   fastify.delete('/:id', BankController.delete)
 }

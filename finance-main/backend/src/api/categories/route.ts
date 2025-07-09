@@ -6,5 +6,7 @@ export async function categoryRoutes(fastify: FastifyInstance) {
 
   fastify.post('/', CategoryController.create)
 
+  fastify.patch('/:id', CategoryController.patch)
+
   fastify.delete('/:id', CategoryController.delete)
 }

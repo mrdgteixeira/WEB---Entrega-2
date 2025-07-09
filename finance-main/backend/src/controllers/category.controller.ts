@@ -32,6 +32,29 @@ export class CategoryController {
     }
   }
 
+  static async patch(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { id } = request.params as { id: string }
+      const { name, icon } = request.body as { name: string, icon: string }
+      
+      // Validações
+      if (!id || id.trim() === '') {
+        return reply.status(400).send({ error: 'ID é obrigatório' })
+      }
+      if (!name || name.trim() === '') {
+        return reply.status(400).send({ error: 'Nome é obrigatório' })
+      }
+      if (!icon || icon.trim() === '') {
+        return reply.status(400).send({ error: 'Ícone é obrigatório' })
+      }
+      
+      const category = await CategoryService.update(id, name, icon)
+      return reply.send(category)
+    } catch (error: any) {
+      return reply.status(400).send({ error: error.message })
+    }
+  }
+
   static async delete(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = request.params as { id: string }

@@ -6,5 +6,7 @@ export async function transactionRoutes(fastify: FastifyInstance) {
 
   fastify.post('/', TransactionController.create)
 
+  fastify.patch('/:id', TransactionController.patch)
+
   fastify.delete('/:id', TransactionController.delete)
 }
