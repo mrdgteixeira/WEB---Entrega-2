@@ -1,0 +1,39 @@
+{
+  "name": "finance-management-system",
+  "version": "1.0.0",
+  "description": "Sistema completo de gestão financeira com API backend e interface web frontend",
+  "main": "index.js",
+  "scripts": {
+    "dev:api": "cd api && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:client\"",
+    "build:api": "cd api && npm run build",
+    "build:client": "cd client && npm run build",
+    "build": "npm run build:api && npm run build:client",
+    "start:api": "cd api && npm start",
+    "start:client": "cd client && npm start",
+    "install:all": "npm install && cd api && npm install && cd ../client && npm install",
+    "setup": "npm run install:all && cd api && npx prisma generate && npx prisma db push"
+  },
+  "keywords": [
+    "finance",
+    "management",
+    "fastify",
+    "nextjs",
+    "typescript",
+    "prisma"
+  ],
+  "author": "Finance Management Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrdgteixeira/WEB---Entrega-2.git"
+  }
+}
