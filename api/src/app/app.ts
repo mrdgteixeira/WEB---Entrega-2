@@ -7,15 +7,7 @@ import { transactionRoutes } from '../routes/transactions/route';
 
 async function buildApp() {
   const app = Fastify({
-    logger: {
-      level: process.env.NODE_ENV === 'production' ? 'warn' : 'info',
-      transport: process.env.NODE_ENV !== 'production' ? {
-        target: 'pino-pretty',
-        options: {
-          colorize: true
-        }
-      } : undefined
-    }
+    logger: process.env.NODE_ENV !== 'production'
   });
 
   // Register CORS

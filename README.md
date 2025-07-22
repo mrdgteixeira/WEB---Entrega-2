@@ -56,26 +56,29 @@ npm run dev
 
 ### Endpoints Disponíveis
 
-#### Bancos (`/banks`)
-- `GET /banks` - Lista todos os bancos
-- `GET /banks/:id` - Busca um banco específico
-- `POST /banks` - Cria um novo banco
-- `PATCH /banks/:id` - Atualiza um banco específico
-- `DELETE /banks/:id` - Remove um banco
+#### Health Check
+- `GET /health` - Status do servidor
 
-#### Categorias (`/categories`)
-- `GET /categories` - Lista todas as categorias
-- `GET /categories/:id` - Busca uma categoria específica
-- `POST /categories` - Cria uma nova categoria
-- `PATCH /categories/:id` - Atualiza uma categoria específica
-- `DELETE /categories/:id` - Remove uma categoria
+#### Bancos (`/api/banks`)
+- `GET /api/banks` - Lista todos os bancos
+- `GET /api/banks/:id` - Busca um banco específico
+- `POST /api/banks` - Cria um novo banco
+- `PATCH /api/banks/:id` - Atualiza um banco específico
+- `DELETE /api/banks/:id` - Remove um banco
 
-#### Transações (`/transactions`)
-- `GET /transactions` - Lista todas as transações
-- `GET /transactions/:id` - Busca uma transação específica
-- `POST /transactions` - Cria uma nova transação
-- `PATCH /transactions/:id` - Atualiza uma transação específica
-- `DELETE /transactions/:id` - Remove uma transação
+#### Categorias (`/api/categories`)
+- `GET /api/categories` - Lista todas as categorias
+- `GET /api/categories/:id` - Busca uma categoria específica
+- `POST /api/categories` - Cria uma nova categoria
+- `PATCH /api/categories/:id` - Atualiza uma categoria específica
+- `DELETE /api/categories/:id` - Remove uma categoria
+
+#### Transações (`/api/transactions`)
+- `GET /api/transactions` - Lista todas as transações
+- `GET /api/transactions/:id` - Busca uma transação específica
+- `POST /api/transactions` - Cria uma nova transação
+- `PATCH /api/transactions/:id` - Atualiza uma transação específica
+- `DELETE /api/transactions/:id` - Remove uma transação
 
 ## 🗄️ Modelo do Banco de Dados
 
@@ -94,8 +97,9 @@ npm run dev
 
 Use o Insomnia ou Postman para testar a API:
 - Importe os endpoints para seu cliente de API favorito
-- Configure a base URL: `http://localhost:3000`
+- Configure a base URL: `http://localhost:3333`
 - Teste todos os endpoints CRUD
+- Health check disponível em: `http://localhost:3333/health`
 
 ## 🤝 Contribuição
 
