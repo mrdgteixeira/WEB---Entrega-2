@@ -1,6 +1,9 @@
 export interface Bank {
   id: string
+  ispb: string
   name: string
+  code: string
+  fullName: string
   createdAt?: Date
   updatedAt?: Date
 }

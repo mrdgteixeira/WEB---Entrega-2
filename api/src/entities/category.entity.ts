@@ -1,7 +1,7 @@
 export interface Category {
   id: string
   name: string
-  icon: string
+  icon?: string
   createdAt?: Date
   updatedAt?: Date
 }

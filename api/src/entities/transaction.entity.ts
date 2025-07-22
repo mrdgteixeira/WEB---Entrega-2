@@ -3,11 +3,11 @@ import { Category } from './category.entity'
 
 export interface Transaction {
   id: string
-  description: string
+  description?: string
   type: 'income' | 'expense'
   amount: number
-  bankId: string
-  categoryId: string
+  bankId?: string
+  categoryId?: string
   date: Date
   createdAt?: Date
   updatedAt?: Date
