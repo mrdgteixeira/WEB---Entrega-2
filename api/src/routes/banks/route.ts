@@ -1,14 +1,31 @@
 import { FastifyInstance } from 'fastify'
 import { BankController } from '../../controllers/bank.controller'
+import { ValidationMiddleware } from '../../common'
 
 export async function bankRoutes(fastify: FastifyInstance) {
+  // GET /banks - Listar todos os bancos
   fastify.get('/', BankController.getAll)
 
-  fastify.get('/:id', BankController.getById)
+  // GET /banks/:id - Buscar banco por ID
+  fastify.get('/:id', {
+    preHandler: ValidationMiddleware.validateUUID('id')
+  }, BankController.getById)
 
-  fastify.post('/', BankController.create)
+  // POST /banks - Criar novo banco
+  fastify.post('/', {
+    preHandler: ValidationMiddleware.validateBankData()
+  }, BankController.create)
 
-  fastify.patch('/:id', BankController.patch)
+  // PATCH /banks/:id - Atualizar banco
+  fastify.patch('/:id', {
+    preHandler: [
+      ValidationMiddleware.validateUUID('id'),
+      ValidationMiddleware.validateBankData()
+    ]
+  }, BankController.patch)
 
-  fastify.delete('/:id', BankController.delete)
+  // DELETE /banks/:id - Remover banco
+  fastify.delete('/:id', {
+    preHandler: ValidationMiddleware.validateUUID('id')
+  }, BankController.delete)
 }

@@ -1,42 +1,60 @@
-import { PrismaClient } from '../../../generated/prisma'
-const prisma = new PrismaClient()
+import { BankRepository } from '../repositories/bank.repository'
+import { CreateBankDto, UpdateBankDto } from '../entities'
+import { ValidationHelper, NotFoundError, ValidationError } from '../common'
+
+const bankRepository = new BankRepository()
 
 export const BankService = {
-  getAll: async () => prisma.bank.findMany(),
+  getAll: async () => {
+    return bankRepository.findAll()
+  },
   getById: async (id: string) => {
-    if (!id || id.trim() === '') {
-      throw new Error('ID é obrigatório')
+    if (!ValidationHelper.isNotEmpty(id)) {
+      throw new ValidationError('ID é obrigatório')
     }
     
-    const bank = await prisma.bank.findUnique({ where: { id } })
+    const bank = await bankRepository.findById(id)
     if (!bank) {
-      throw new Error('Banco não encontrado')
+      throw new NotFoundError('Banco')
     }
     
     return bank
   },
-  create: async (name: string) => {
-    if (!name || name.trim() === '') {
-      throw new Error('Nome é obrigatório')
+  create: async (data: CreateBankDto) => {
+    if (!ValidationHelper.isNotEmpty(data.name)) {
+      throw new ValidationError('Nome é obrigatório')
     }
     
-    return prisma.bank.create({ data: { name: name.trim() } })
+    return bankRepository.create({ name: data.name.trim() })
   },
-  update: async (id: string, name: string) => {
-    if (!id || id.trim() === '') {
-      throw new Error('ID é obrigatório')
+  update: async (id: string, data: UpdateBankDto) => {
+    if (!ValidationHelper.isNotEmpty(id)) {
+      throw new ValidationError('ID é obrigatório')
     }
-    if (!name || name.trim() === '') {
-      throw new Error('Nome é obrigatório')
+    if (data.name && !ValidationHelper.isNotEmpty(data.name)) {
+      throw new ValidationError('Nome é obrigatório')
     }
     
-    return prisma.bank.update({ where: { id }, data: { name: name.trim() } })
+    const exists = await bankRepository.exists(id)
+    if (!exists) {
+      throw new NotFoundError('Banco')
+    }
+    
+    const updateData: any = {}
+    if (data.name) updateData.name = data.name.trim()
+    
+    return bankRepository.update(id, updateData)
   },
   delete: async (id: string) => {
-    if (!id || id.trim() === '') {
-      throw new Error('ID é obrigatório')
+    if (!ValidationHelper.isNotEmpty(id)) {
+      throw new ValidationError('ID é obrigatório')
     }
     
-    return prisma.bank.delete({ where: { id } })
+    const exists = await bankRepository.exists(id)
+    if (!exists) {
+      throw new NotFoundError('Banco')
+    }
+    
+    return bankRepository.delete(id)
   },
 }

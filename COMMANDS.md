@@ -53,28 +53,32 @@ npm run build:client
 
 ## URLs
 
-- **API Backend**: http://localhost:3000
-- **Client Frontend**: http://localhost:3001
+- **API Backend**: http://localhost:3333
+- **Client Frontend**: http://localhost:3000
+- **Health Check**: http://localhost:3333/health
 
 ## Endpoints da API
 
+### Health Check
+- GET /health - Status do servidor
+
 ### Bancos
-- GET /banks - Listar bancos
-- GET /banks/:id - Buscar banco específico
-- POST /banks - Criar banco
-- PATCH /banks/:id - Atualizar banco
-- DELETE /banks/:id - Excluir banco
+- GET /api/banks - Listar bancos
+- GET /api/banks/:id - Buscar banco específico
+- POST /api/banks - Criar banco
+- PATCH /api/banks/:id - Atualizar banco
+- DELETE /api/banks/:id - Excluir banco
 
 ### Categorias
-- GET /categories - Listar categorias
-- GET /categories/:id - Buscar categoria específica
-- POST /categories - Criar categoria
-- PATCH /categories/:id - Atualizar categoria
-- DELETE /categories/:id - Excluir categoria
+- GET /api/categories - Listar categorias
+- GET /api/categories/:id - Buscar categoria específica
+- POST /api/categories - Criar categoria
+- PATCH /api/categories/:id - Atualizar categoria
+- DELETE /api/categories/:id - Excluir categoria
 
 ### Transações
-- GET /transactions - Listar transações
-- GET /transactions/:id - Buscar transação específica
-- POST /transactions - Criar transação
-- PATCH /transactions/:id - Atualizar transação
-- DELETE /transactions/:id - Excluir transação
+- GET /api/transactions - Listar transações
+- GET /api/transactions/:id - Buscar transação específica
+- POST /api/transactions - Criar transação
+- PATCH /api/transactions/:id - Atualizar transação
+- DELETE /api/transactions/:id - Excluir transação

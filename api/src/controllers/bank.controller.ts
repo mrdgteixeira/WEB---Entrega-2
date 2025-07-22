@@ -1,77 +1,60 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { BankService } from '../services/bank.service'
+import { CreateBankDto, UpdateBankDto } from '../entities'
+import { BaseController } from './base.controller'
 
-export class BankController {
+export class BankController extends BaseController {
   static async getAll(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const banks = await BankService.getAll()
-      return reply.send(banks)
-    } catch (error: any) {
-      return reply.status(500).send({ error: error.message })
-    }
+    const controller = new BankController()
+    return controller.handleRequest(request, reply, async () => {
+      return await BankService.getAll()
+    })
   }
 
   static async getById(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { id } = request.params as { id: string }
-      const bank = await BankService.getById(id)
-      return reply.send(bank)
-    } catch (error: any) {
-      if (error.message === 'Banco não encontrado') {
-        return reply.status(404).send({ error: error.message })
-      }
-      return reply.status(400).send({ error: error.message })
-    }
+    const controller = new BankController()
+    const { id } = request.params as { id: string }
+    
+    return controller.handleRequest(request, reply, async () => {
+      return await BankService.getById(id)
+    })
   }
 
   static async create(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { name } = request.body as { name: string }
-      const bank = await BankService.create(name)
-      return reply.status(201).send(bank)
-    } catch (error: any) {
-      return reply.status(400).send({ error: error.message })
-    }
+    const controller = new BankController()
+    const data = request.body as CreateBankDto
+    
+    return controller.handleCreateRequest(request, reply, async () => {
+      return await BankService.create(data)
+    })
   }
 
   static async update(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { id } = request.params as { id: string }
-      const { name } = request.body as { name: string }
-      const bank = await BankService.update(id, name)
-      return reply.send(bank)
-    } catch (error: any) {
-      return reply.status(400).send({ error: error.message })
-    }
+    const controller = new BankController()
+    const { id } = request.params as { id: string }
+    const data = request.body as UpdateBankDto
+    
+    return controller.handleRequest(request, reply, async () => {
+      return await BankService.update(id, data)
+    })
   }
 
   static async patch(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { id } = request.params as { id: string }
-      const { name } = request.body as { name: string }
-
-      // Validações
-      if (!id || id.trim() === '') {
-        return reply.status(400).send({ error: 'ID é obrigatório' })
-      }
-      if (!name || name.trim() === '') {
-        return reply.status(400).send({ error: 'Nome é obrigatório' })
-      }
-
-      const bank = await BankService.update(id, name)
-      return reply.send(bank)
-    } catch (error: any) {
-      return reply.status(400).send({ error: error.message })
-    }
+    const controller = new BankController()
+    const { id } = request.params as { id: string }
+    const data = request.body as UpdateBankDto
+    
+    return controller.handleRequest(request, reply, async () => {
+      return await BankService.update(id, data)
+    })
   }
 
   static async delete(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { id } = request.params as { id: string }
-      await BankService.delete(id)
-      return reply.status(204).send()
-    } catch (error: any) {
-      return reply.status(400).send({ error: error.message })
-    }
+    const controller = new BankController()
+    const { id } = request.params as { id: string }
+    
+    return controller.handleDeleteRequest(request, reply, async () => {
+      return await BankService.delete(id)
+    })
   }
 }
