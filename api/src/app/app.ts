@@ -1,9 +1,9 @@
 import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 
-import { bankRoutes } from '../api/banks/route';
-import { categoryRoutes } from '../api/categories/route';
-import { transactionRoutes } from '../api/transactions/route';
+import { bankRoutes } from '../routes/banks/route';
+import { categoryRoutes } from '../routes/categories/route';
+import { transactionRoutes } from '../routes/transactions/route';
 
 async function buildApp() {
   const app = Fastify();
