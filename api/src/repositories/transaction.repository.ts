@@ -1,11 +1,7 @@
-import { PrismaClient } from '../../prisma/generated'
+import { BaseRepository } from './base.repository'
+import { CreateTransactionDto, UpdateTransactionDto } from '../entities'
 
-export class TransactionRepository {
-  private prisma: PrismaClient
-
-  constructor() {
-    this.prisma = new PrismaClient()
-  }
+export class TransactionRepository extends BaseRepository {
 
   async findAll() {
     return this.prisma.transaction.findMany({ 
@@ -27,11 +23,11 @@ export class TransactionRepository {
   }
 
   async create(data: {
-    description: string
+    description?: string
     type: string
     amount: number
-    bankId: string
-    categoryId: string
+    bankId?: string
+    categoryId?: string
     date: Date
   }) {
     return this.prisma.transaction.create({ 
@@ -44,11 +40,11 @@ export class TransactionRepository {
   }
 
   async update(id: string, data: Partial<{
-    description: string
+    description?: string
     type: string
     amount: number
-    bankId: string
-    categoryId: string
+    bankId?: string
+    categoryId?: string
     date: Date
   }>) {
     return this.prisma.transaction.update({ 

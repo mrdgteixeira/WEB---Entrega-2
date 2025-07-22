@@ -1,73 +1,73 @@
-import { PrismaClient } from '../../prisma/generated'
-const prisma = new PrismaClient()
+import { TransactionRepository } from '../repositories/transaction.repository'
+import { CreateTransactionDto, UpdateTransactionDto } from '../entities'
+import { ValidationHelper, NotFoundError, ValidationError } from '../common'
+
+const transactionRepository = new TransactionRepository()
 
 export const TransactionService = {
-  getAll: async () =>
-    prisma.transaction.findMany({ include: { bank: true, category: true } }),
+  getAll: async () => {
+    return transactionRepository.findAll()
+  },
   getById: async (id: string) => {
-    if (!id || id.trim() === '') {
-      throw new Error('ID é obrigatório')
+    if (!ValidationHelper.isNotEmpty(id)) {
+      throw new ValidationError('ID é obrigatório')
     }
     
-    const transaction = await prisma.transaction.findUnique({ 
-      where: { id },
-      include: { bank: true, category: true }
-    })
+    const transaction = await transactionRepository.findById(id)
     if (!transaction) {
-      throw new Error('Transação não encontrada')
+      throw new NotFoundError('Transação')
     }
     
     return transaction
   },
-  create: async (data: any) => {
-    if (!data.description || data.description.trim() === '') {
-      throw new Error('Descrição é obrigatória')
+  create: async (data: CreateTransactionDto) => {
+    if (data.description && !ValidationHelper.isNotEmpty(data.description)) {
+      throw new ValidationError('Descrição não pode ser vazia')
     }
     if (!data.type || !['income', 'expense'].includes(data.type)) {
-      throw new Error('Tipo deve ser "income" ou "expense"')
+      throw new ValidationError('Tipo deve ser "income" ou "expense"')
     }
-    if (!data.amount || data.amount <= 0) {
-      throw new Error('Valor deve ser maior que zero')
-    }
-    if (!data.bankId || data.bankId.trim() === '') {
-      throw new Error('ID do banco é obrigatório')
-    }
-    if (!data.categoryId || data.categoryId.trim() === '') {
-      throw new Error('ID da categoria é obrigatório')
+    if (!data.amount || data.amount === 0) {
+      throw new ValidationError('Valor é obrigatório')
     }
     if (!data.date) {
-      throw new Error('Data é obrigatória')
+      throw new ValidationError('Data é obrigatória')
     }
     
-    return prisma.transaction.create({ data })
+    return transactionRepository.create(data)
   },
-  update: async (id: string, data: any) => {
-    if (!id || id.trim() === '') {
-      throw new Error('ID é obrigatório')
+  update: async (id: string, data: UpdateTransactionDto) => {
+    if (!ValidationHelper.isNotEmpty(id)) {
+      throw new ValidationError('ID é obrigatório')
     }
-    if (data.description && data.description.trim() === '') {
-      throw new Error('Descrição não pode ser vazia')
+    
+    const exists = await transactionRepository.exists(id)
+    if (!exists) {
+      throw new NotFoundError('Transação')
+    }
+    
+    if (data.description && !ValidationHelper.isNotEmpty(data.description)) {
+      throw new ValidationError('Descrição não pode ser vazia')
     }
     if (data.type && !['income', 'expense'].includes(data.type)) {
-      throw new Error('Tipo deve ser "income" ou "expense"')
+      throw new ValidationError('Tipo deve ser "income" ou "expense"')
     }
-    if (data.amount && data.amount <= 0) {
-      throw new Error('Valor deve ser maior que zero')
-    }
-    if (data.bankId && data.bankId.trim() === '') {
-      throw new Error('ID do banco não pode ser vazio')
-    }
-    if (data.categoryId && data.categoryId.trim() === '') {
-      throw new Error('ID da categoria não pode ser vazio')
+    if (data.amount && data.amount === 0) {
+      throw new ValidationError('Valor não pode ser zero')
     }
     
-    return prisma.transaction.update({ where: { id }, data })
+    return transactionRepository.update(id, data)
   },
   delete: async (id: string) => {
-    if (!id || id.trim() === '') {
-      throw new Error('ID é obrigatório')
+    if (!ValidationHelper.isNotEmpty(id)) {
+      throw new ValidationError('ID é obrigatório')
     }
     
-    return prisma.transaction.delete({ where: { id } })
-  },
+    const exists = await transactionRepository.exists(id)
+    if (!exists) {
+      throw new NotFoundError('Transação')
+    }
+    
+    return transactionRepository.delete(id)
+  }
 }

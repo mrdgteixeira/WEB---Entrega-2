@@ -1,11 +1,7 @@
-import { PrismaClient } from '../../prisma/generated'
+import { BaseRepository } from './base.repository'
+import { CreateCategoryDto, UpdateCategoryDto } from '../entities'
 
-export class CategoryRepository {
-  private prisma: PrismaClient
-
-  constructor() {
-    this.prisma = new PrismaClient()
-  }
+export class CategoryRepository extends BaseRepository {
 
   async findAll() {
     return this.prisma.category.findMany()
