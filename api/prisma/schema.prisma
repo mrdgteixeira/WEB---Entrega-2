@@ -21,9 +21,9 @@ model Category {
 
 model Bank {
   id          String        @id @default(uuid())
-  ispb        String
-  name        String
-  code        String
+  ispb        String        @unique
+  name        String        @unique  // Bank names should be unique
+  code        String        @unique  // Bank codes should be unique
   fullName    String
   createdAt   DateTime      @default(now())
   updatedAt   DateTime?     @updatedAt
@@ -35,8 +35,8 @@ model Bank {
 model Transaction {
   id          String    @id @default(uuid())
   description String?
-  amount      Float
-  type        String
+  amount      Float     // Must be positive number - validated in middleware
+  type        String    // Must be 'income' or 'expense' - validated in middleware
   date        DateTime
   categoryId  String?
   category    Category? @relation(fields: [categoryId], references: [id])

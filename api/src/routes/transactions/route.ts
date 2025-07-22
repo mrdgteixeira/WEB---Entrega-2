@@ -1,14 +1,26 @@
 import { FastifyInstance } from 'fastify'
 import { TransactionController } from '../../controllers/transaction.controller'
+import { ValidationMiddleware } from '../../common'
 
 export async function transactionRoutes(fastify: FastifyInstance) {
   fastify.get('/', TransactionController.getAll)
 
-  fastify.get('/:id', TransactionController.getById)
+  fastify.get('/:id', {
+    preHandler: ValidationMiddleware.validateUUID('id')
+  }, TransactionController.getById)
 
-  fastify.post('/', TransactionController.create)
+  fastify.post('/', {
+    preHandler: ValidationMiddleware.validateTransactionData()
+  }, TransactionController.create)
 
-  fastify.patch('/:id', TransactionController.patch)
+  fastify.patch('/:id', {
+    preHandler: [
+      ValidationMiddleware.validateUUID('id'),
+      ValidationMiddleware.validateTransactionUpdateData()
+    ]
+  }, TransactionController.patch)
 
-  fastify.delete('/:id', TransactionController.delete)
+  fastify.delete('/:id', {
+    preHandler: ValidationMiddleware.validateUUID('id')
+  }, TransactionController.delete)
 }

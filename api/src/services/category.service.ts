@@ -1,6 +1,6 @@
 import { CategoryRepository } from '../repositories/category.repository'
 import { CreateCategoryDto, UpdateCategoryDto } from '../entities'
-import { ValidationHelper, NotFoundError, ValidationError } from '../common'
+import { NotFoundError, ValidationError } from '../common'
 
 const categoryRepository = new CategoryRepository()
 
@@ -9,10 +9,6 @@ export const CategoryService = {
     return categoryRepository.findAll()
   },
   getById: async (id: string) => {
-    if (!ValidationHelper.isNotEmpty(id)) {
-      throw new ValidationError('ID é obrigatório')
-    }
-    
     const category = await categoryRepository.findById(id)
     if (!category) {
       throw new NotFoundError('Categoria')
@@ -21,40 +17,31 @@ export const CategoryService = {
     return category
   },
   create: async (data: CreateCategoryDto) => {
-    if (!ValidationHelper.isNotEmpty(data.name)) {
-      throw new ValidationError('Nome é obrigatório')
+    try {
+      return await categoryRepository.create(data)
+    } catch (error: any) {
+      if (error.code === 'P2002' && error.meta?.target?.includes('name')) {
+        throw new ValidationError('Uma categoria com este nome já existe no sistema')
+      }
+      throw error
     }
-    
-    return categoryRepository.create({ 
-      name: data.name.trim(), 
-      icon: data.icon?.trim()
-    })
   },
   update: async (id: string, data: UpdateCategoryDto) => {
-    if (!ValidationHelper.isNotEmpty(id)) {
-      throw new ValidationError('ID é obrigatório')
-    }
-    
     const exists = await categoryRepository.exists(id)
     if (!exists) {
       throw new NotFoundError('Categoria')
     }
     
-    const updateData: any = {}
-    if (data.name && ValidationHelper.isNotEmpty(data.name)) {
-      updateData.name = data.name.trim()
+    try {
+      return await categoryRepository.update(id, data)
+    } catch (error: any) {
+      if (error.code === 'P2002' && error.meta?.target?.includes('name')) {
+        throw new ValidationError('Uma categoria com este nome já existe no sistema')
+      }
+      throw error
     }
-    if (data.icon && ValidationHelper.isNotEmpty(data.icon)) {
-      updateData.icon = data.icon.trim()
-    }
-    
-    return categoryRepository.update(id, updateData)
   },
   delete: async (id: string) => {
-    if (!ValidationHelper.isNotEmpty(id)) {
-      throw new ValidationError('ID é obrigatório')
-    }
-    
     const exists = await categoryRepository.exists(id)
     if (!exists) {
       throw new NotFoundError('Categoria')

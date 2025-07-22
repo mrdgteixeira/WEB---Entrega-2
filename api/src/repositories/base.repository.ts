@@ -11,8 +11,9 @@ export abstract class BaseRepository {
   protected async handleError(error: any, operation: string): Promise<never> {
     console.error(`Database error in ${operation}:`, error)
     
+    // Let P2002 (unique constraint) errors bubble up to service layer for custom handling
     if (error.code === 'P2002') {
-      throw new Error('Registro já existe')
+      throw error
     }
     if (error.code === 'P2025') {
       throw new Error('Registro não encontrado')

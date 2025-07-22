@@ -1,6 +1,25 @@
 import { TransactionRepository } from '../repositories/transaction.repository'
 import { CreateTransactionDto, UpdateTransactionDto } from '../entities'
-import { ValidationHelper, NotFoundError, ValidationError } from '../common'
+import { NotFoundError, ValidationError } from '../common'
+
+// Internal types for repository layer (with Date objects)
+interface CreateTransactionData {
+  description?: string
+  amount: number
+  type: 'income' | 'expense'
+  date: Date
+  categoryId?: string
+  bankId?: string
+}
+
+interface UpdateTransactionData {
+  description?: string
+  amount?: number
+  type?: 'income' | 'expense'
+  date?: Date
+  categoryId?: string
+  bankId?: string
+}
 
 const transactionRepository = new TransactionRepository()
 
@@ -9,10 +28,6 @@ export const TransactionService = {
     return transactionRepository.findAll()
   },
   getById: async (id: string) => {
-    if (!ValidationHelper.isNotEmpty(id)) {
-      throw new ValidationError('ID é obrigatório')
-    }
-    
     const transaction = await transactionRepository.findById(id)
     if (!transaction) {
       throw new NotFoundError('Transação')
@@ -21,48 +36,44 @@ export const TransactionService = {
     return transaction
   },
   create: async (data: CreateTransactionDto) => {
-    if (data.description && !ValidationHelper.isNotEmpty(data.description)) {
-      throw new ValidationError('Descrição não pode ser vazia')
-    }
-    if (!data.type || !['income', 'expense'].includes(data.type)) {
-      throw new ValidationError('Tipo deve ser "income" ou "expense"')
-    }
-    if (!data.amount || data.amount === 0) {
-      throw new ValidationError('Valor é obrigatório')
-    }
-    if (!data.date) {
-      throw new ValidationError('Data é obrigatória')
+    // Convert string date to Date object for database
+    const dateObj = new Date(data.date)
+    if (isNaN(dateObj.getTime())) {
+      throw new ValidationError('Data inválida fornecida')
     }
     
-    return transactionRepository.create(data)
+    const processedData: CreateTransactionData = {
+      ...data,
+      date: dateObj
+    }
+    return transactionRepository.create(processedData)
   },
   update: async (id: string, data: UpdateTransactionDto) => {
-    if (!ValidationHelper.isNotEmpty(id)) {
-      throw new ValidationError('ID é obrigatório')
-    }
-    
     const exists = await transactionRepository.exists(id)
     if (!exists) {
       throw new NotFoundError('Transação')
     }
     
-    if (data.description && !ValidationHelper.isNotEmpty(data.description)) {
-      throw new ValidationError('Descrição não pode ser vazia')
-    }
-    if (data.type && !['income', 'expense'].includes(data.type)) {
-      throw new ValidationError('Tipo deve ser "income" ou "expense"')
-    }
-    if (data.amount && data.amount === 0) {
-      throw new ValidationError('Valor não pode ser zero')
+    // Convert string date to Date object for database if date is provided
+    const processedData: UpdateTransactionData = {
+      description: data.description,
+      amount: data.amount,
+      type: data.type,
+      categoryId: data.categoryId,
+      bankId: data.bankId
     }
     
-    return transactionRepository.update(id, data)
+    if (data.date) {
+      const dateObj = new Date(data.date)
+      if (isNaN(dateObj.getTime())) {
+        throw new ValidationError('Data inválida fornecida')
+      }
+      processedData.date = dateObj
+    }
+    
+    return transactionRepository.update(id, processedData)
   },
   delete: async (id: string) => {
-    if (!ValidationHelper.isNotEmpty(id)) {
-      throw new ValidationError('ID é obrigatório')
-    }
-    
     const exists = await transactionRepository.exists(id)
     if (!exists) {
       throw new NotFoundError('Transação')

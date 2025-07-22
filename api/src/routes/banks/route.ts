@@ -16,7 +16,7 @@ export async function bankRoutes(fastify: FastifyInstance) {
   fastify.patch('/:id', {
     preHandler: [
       ValidationMiddleware.validateUUID('id'),
-      ValidationMiddleware.validateBankData()
+      ValidationMiddleware.validateBankUpdateData()
     ]
   }, BankController.patch)
 

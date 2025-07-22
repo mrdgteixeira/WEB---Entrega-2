@@ -19,8 +19,8 @@ export interface Transaction {
 export interface CreateTransactionDto {
   description?: string
   amount: number
-  type: string
-  date: Date
+  type: 'income' | 'expense'
+  date: string  // Received as string from frontend, converted to Date in service
   categoryId?: string
   bankId?: string
 }
@@ -28,8 +28,8 @@ export interface CreateTransactionDto {
 export interface UpdateTransactionDto {
   description?: string
   amount?: number
-  type?: string
-  date?: Date
+  type?: 'income' | 'expense'
+  date?: string  // Received as string from frontend, converted to Date in service
   categoryId?: string
   bankId?: string
 }
