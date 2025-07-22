@@ -50,7 +50,6 @@ export class TransactionController {
       const { id } = request.params as { id: string }
       const data = request.body as any
       
-      // Validações
       if (!id || id.trim() === '') {
         return reply.status(400).send({ error: 'ID é obrigatório' })
       }

@@ -1,4 +1,4 @@
-import { PrismaClient } from '../../../generated/prisma'
+import { PrismaClient } from '../../prisma/generated'
 
 export class CategoryRepository {
   private prisma: PrismaClient
@@ -17,13 +17,13 @@ export class CategoryRepository {
     })
   }
 
-  async create(data: { name: string; icon: string }) {
+  async create(data: { name: string; icon?: string }) {
     return this.prisma.category.create({ 
       data 
     })
   }
 
-  async update(id: string, data: { name: string; icon: string }) {
+  async update(id: string, data: { name?: string; icon?: string }) {
     return this.prisma.category.update({ 
       where: { id }, 
       data 

@@ -24,13 +24,10 @@ export const CategoryService = {
     if (!ValidationHelper.isNotEmpty(data.name)) {
       throw new ValidationError('Nome é obrigatório')
     }
-    if (!ValidationHelper.isNotEmpty(data.icon)) {
-      throw new ValidationError('Ícone é obrigatório')
-    }
     
     return categoryRepository.create({ 
       name: data.name.trim(), 
-      icon: data.icon.trim() 
+      icon: data.icon?.trim()
     })
   },
   update: async (id: string, data: UpdateCategoryDto) => {

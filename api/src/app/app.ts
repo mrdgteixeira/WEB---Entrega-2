@@ -10,7 +10,6 @@ async function buildApp() {
     logger: process.env.NODE_ENV !== 'production'
   });
 
-  // Register CORS
   await app.register(fastifyCors, {
     origin: process.env.NODE_ENV === 'production' 
       ? ['http://localhost:3000', 'http://localhost:3001'] 
@@ -18,17 +17,14 @@ async function buildApp() {
     credentials: true
   });
 
-  // Health check
   app.get('/health', async (request, reply) => {
     return { status: 'ok', timestamp: new Date().toISOString() }
   });
 
-  // API routes
   app.register(bankRoutes, { prefix: '/api/banks' });
   app.register(categoryRoutes, { prefix: '/api/categories' });
   app.register(transactionRoutes, { prefix: '/api/transactions' });
 
-  // Global error handler
   app.setErrorHandler(async (error, request, reply) => {
     app.log.error(error);
     

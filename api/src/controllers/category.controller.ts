@@ -1,80 +1,60 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { CategoryService } from '../services/category.service'
+import { CreateCategoryDto, UpdateCategoryDto } from '../entities'
+import { BaseController } from './base.controller'
 
-export class CategoryController {
+export class CategoryController extends BaseController {
   static async getAll(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const categories = await CategoryService.getAll()
-      return reply.send(categories)
-    } catch (error: any) {
-      return reply.status(500).send({ error: error.message })
-    }
+    const controller = new CategoryController()
+    return controller.handleRequest(request, reply, async () => {
+      return await CategoryService.getAll()
+    })
   }
 
   static async getById(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { id } = request.params as { id: string }
-      const category = await CategoryService.getById(id)
-      return reply.send(category)
-    } catch (error: any) {
-      if (error.message === 'Categoria não encontrada') {
-        return reply.status(404).send({ error: error.message })
-      }
-      return reply.status(400).send({ error: error.message })
-    }
+    const controller = new CategoryController()
+    const { id } = request.params as { id: string }
+    
+    return controller.handleRequest(request, reply, async () => {
+      return await CategoryService.getById(id)
+    })
   }
 
   static async create(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { name, icon } = request.body as { name: string, icon: string }
-      const category = await CategoryService.create(name, icon)
-      return reply.status(201).send(category)
-    } catch (error: any) {
-      return reply.status(400).send({ error: error.message })
-    }
+    const controller = new CategoryController()
+    const data = request.body as CreateCategoryDto
+    
+    return controller.handleCreateRequest(request, reply, async () => {
+      return await CategoryService.create(data)
+    })
   }
 
   static async update(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { id } = request.params as { id: string }
-      const { name, icon } = request.body as { name: string, icon: string }
-      const category = await CategoryService.update(id, name, icon)
-      return reply.send(category)
-    } catch (error: any) {
-      return reply.status(400).send({ error: error.message })
-    }
+    const controller = new CategoryController()
+    const { id } = request.params as { id: string }
+    const data = request.body as UpdateCategoryDto
+    
+    return controller.handleRequest(request, reply, async () => {
+      return await CategoryService.update(id, data)
+    })
   }
 
   static async patch(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { id } = request.params as { id: string }
-      const { name, icon } = request.body as { name: string, icon: string }
-      
-      // Validações
-      if (!id || id.trim() === '') {
-        return reply.status(400).send({ error: 'ID é obrigatório' })
-      }
-      if (!name || name.trim() === '') {
-        return reply.status(400).send({ error: 'Nome é obrigatório' })
-      }
-      if (!icon || icon.trim() === '') {
-        return reply.status(400).send({ error: 'Ícone é obrigatório' })
-      }
-      
-      const category = await CategoryService.update(id, name, icon)
-      return reply.send(category)
-    } catch (error: any) {
-      return reply.status(400).send({ error: error.message })
-    }
+    const controller = new CategoryController()
+    const { id } = request.params as { id: string }
+    const data = request.body as UpdateCategoryDto
+    
+    return controller.handleRequest(request, reply, async () => {
+      return await CategoryService.update(id, data)
+    })
   }
 
   static async delete(request: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { id } = request.params as { id: string }
-      await CategoryService.delete(id)
-      return reply.status(204).send()
-    } catch (error: any) {
-      return reply.status(400).send({ error: error.message })
-    }
+    const controller = new CategoryController()
+    const { id } = request.params as { id: string }
+    
+    return controller.handleDeleteRequest(request, reply, async () => {
+      return await CategoryService.delete(id)
+    })
   }
 }

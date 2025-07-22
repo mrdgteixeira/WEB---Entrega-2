@@ -12,25 +12,24 @@ export interface Transaction {
   createdAt?: Date
   updatedAt?: Date
   
-  // Relações
   bank?: Bank
   category?: Category
 }
 
 export interface CreateTransactionDto {
-  description: string
-  type: 'income' | 'expense'
+  description?: string
   amount: number
-  bankId: string
-  categoryId: string
+  type: string
   date: Date
+  categoryId?: string
+  bankId?: string
 }
 
 export interface UpdateTransactionDto {
   description?: string
-  type?: 'income' | 'expense'
   amount?: number
-  bankId?: string
-  categoryId?: string
+  type?: string
   date?: Date
+  categoryId?: string
+  bankId?: string
 }

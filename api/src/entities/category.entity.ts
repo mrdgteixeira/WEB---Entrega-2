@@ -8,7 +8,7 @@ export interface Category {
 
 export interface CreateCategoryDto {
   name: string
-  icon: string
+  icon?: string
 }
 
 export interface UpdateCategoryDto {

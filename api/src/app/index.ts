@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import buildApp from './app';
 import { DatabaseConnection } from '../common';
 import { FastifyInstance } from 'fastify';
@@ -11,7 +12,6 @@ async function startServer() {
   try {
     app = await buildApp();
 
-    // Graceful shutdown
     const gracefulShutdown = async (signal: string) => {
       if (app) {
         app.log.info(`Received ${signal}, shutting down gracefully...`);
@@ -31,7 +31,6 @@ async function startServer() {
     process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
     process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
-    // Start server
     await app.listen({ 
       port: Number(PORT), 
       host: HOST 

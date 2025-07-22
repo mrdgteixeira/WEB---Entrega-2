@@ -1,4 +1,4 @@
-import { PrismaClient } from '../../../generated/prisma'
+import { PrismaClient } from '../../prisma/generated'
 
 export class TransactionRepository {
   private prisma: PrismaClient

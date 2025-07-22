@@ -6,9 +6,15 @@ export interface Bank {
 }
 
 export interface CreateBankDto {
+  ispb: string
   name: string
+  code: string
+  fullName: string
 }
 
 export interface UpdateBankDto {
+  ispb?: string
   name?: string
+  code?: string
+  fullName?: string
 }

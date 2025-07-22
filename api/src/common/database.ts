@@ -1,6 +1,5 @@
-import { PrismaClient } from '../../../generated/prisma'
+import { PrismaClient } from '../../prisma/generated'
 
-// Singleton pattern para evitar múltiplas instâncias do Prisma
 class DatabaseConnection {
   private static instance: PrismaClient
   
