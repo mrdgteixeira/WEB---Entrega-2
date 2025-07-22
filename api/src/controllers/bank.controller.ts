@@ -11,6 +11,19 @@ export class BankController {
     }
   }
 
+  static async getById(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { id } = request.params as { id: string }
+      const bank = await BankService.getById(id)
+      return reply.send(bank)
+    } catch (error: any) {
+      if (error.message === 'Banco não encontrado') {
+        return reply.status(404).send({ error: error.message })
+      }
+      return reply.status(400).send({ error: error.message })
+    }
+  }
+
   static async create(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { name } = request.body as { name: string }

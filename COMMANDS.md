@@ -60,18 +60,21 @@ npm run build:client
 
 ### Bancos
 - GET /banks - Listar bancos
+- GET /banks/:id - Buscar banco específico
 - POST /banks - Criar banco
 - PATCH /banks/:id - Atualizar banco
 - DELETE /banks/:id - Excluir banco
 
 ### Categorias
 - GET /categories - Listar categorias
+- GET /categories/:id - Buscar categoria específica
 - POST /categories - Criar categoria
 - PATCH /categories/:id - Atualizar categoria
 - DELETE /categories/:id - Excluir categoria
 
 ### Transações
 - GET /transactions - Listar transações
+- GET /transactions/:id - Buscar transação específica
 - POST /transactions - Criar transação
 - PATCH /transactions/:id - Atualizar transação
 - DELETE /transactions/:id - Excluir transação

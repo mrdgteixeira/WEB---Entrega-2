@@ -4,6 +4,21 @@ const prisma = new PrismaClient()
 export const TransactionService = {
   getAll: async () =>
     prisma.transaction.findMany({ include: { bank: true, category: true } }),
+  getById: async (id: string) => {
+    if (!id || id.trim() === '') {
+      throw new Error('ID é obrigatório')
+    }
+    
+    const transaction = await prisma.transaction.findUnique({ 
+      where: { id },
+      include: { bank: true, category: true }
+    })
+    if (!transaction) {
+      throw new Error('Transação não encontrada')
+    }
+    
+    return transaction
+  },
   create: async (data: any) => {
     if (!data.description || data.description.trim() === '') {
       throw new Error('Descrição é obrigatória')

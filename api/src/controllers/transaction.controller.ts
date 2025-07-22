@@ -11,6 +11,19 @@ export class TransactionController {
     }
   }
 
+  static async getById(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { id } = request.params as { id: string }
+      const transaction = await TransactionService.getById(id)
+      return reply.send(transaction)
+    } catch (error: any) {
+      if (error.message === 'Transação não encontrada') {
+        return reply.status(404).send({ error: error.message })
+      }
+      return reply.status(400).send({ error: error.message })
+    }
+  }
+
   static async create(request: FastifyRequest, reply: FastifyReply) {
     try {
       const data = request.body

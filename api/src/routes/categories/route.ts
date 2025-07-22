@@ -4,6 +4,8 @@ import { CategoryController } from '../../controllers/category.controller'
 export async function categoryRoutes(fastify: FastifyInstance) {
   fastify.get('/', CategoryController.getAll)
 
+  fastify.get('/:id', CategoryController.getById)
+
   fastify.post('/', CategoryController.create)
 
   fastify.patch('/:id', CategoryController.patch)

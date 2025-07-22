@@ -3,6 +3,18 @@ const prisma = new PrismaClient()
 
 export const BankService = {
   getAll: async () => prisma.bank.findMany(),
+  getById: async (id: string) => {
+    if (!id || id.trim() === '') {
+      throw new Error('ID é obrigatório')
+    }
+    
+    const bank = await prisma.bank.findUnique({ where: { id } })
+    if (!bank) {
+      throw new Error('Banco não encontrado')
+    }
+    
+    return bank
+  },
   create: async (name: string) => {
     if (!name || name.trim() === '') {
       throw new Error('Nome é obrigatório')

@@ -58,18 +58,21 @@ npm run dev
 
 #### Bancos (`/banks`)
 - `GET /banks` - Lista todos os bancos
+- `GET /banks/:id` - Busca um banco específico
 - `POST /banks` - Cria um novo banco
 - `PATCH /banks/:id` - Atualiza um banco específico
 - `DELETE /banks/:id` - Remove um banco
 
 #### Categorias (`/categories`)
 - `GET /categories` - Lista todas as categorias
+- `GET /categories/:id` - Busca uma categoria específica
 - `POST /categories` - Cria uma nova categoria
 - `PATCH /categories/:id` - Atualiza uma categoria específica
 - `DELETE /categories/:id` - Remove uma categoria
 
 #### Transações (`/transactions`)
 - `GET /transactions` - Lista todas as transações
+- `GET /transactions/:id` - Busca uma transação específica
 - `POST /transactions` - Cria uma nova transação
 - `PATCH /transactions/:id` - Atualiza uma transação específica
 - `DELETE /transactions/:id` - Remove uma transação

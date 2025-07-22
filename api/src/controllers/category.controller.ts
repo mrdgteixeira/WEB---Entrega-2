@@ -11,6 +11,19 @@ export class CategoryController {
     }
   }
 
+  static async getById(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      const { id } = request.params as { id: string }
+      const category = await CategoryService.getById(id)
+      return reply.send(category)
+    } catch (error: any) {
+      if (error.message === 'Categoria não encontrada') {
+        return reply.status(404).send({ error: error.message })
+      }
+      return reply.status(400).send({ error: error.message })
+    }
+  }
+
   static async create(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { name, icon } = request.body as { name: string, icon: string }
