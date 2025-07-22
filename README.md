@@ -6,7 +6,7 @@ Um sistema completo de gestão financeira com API backend e interface web fronte
 
 ```
 finance-main/
-├── api/                # Backend API (Fastify + TypeScript)
+├── backend/            # Backend API (Fastify + TypeScript)
 ├── client/             # Frontend Web (Next.js + TypeScript)
 ├── database/           # Esquemas e configurações do banco (Prisma)
 ├── docs/               # Documentação do projeto
@@ -38,7 +38,7 @@ finance-main/
 
 ### 1. Configuração do Backend (API)
 ```bash
-cd api
+cd backend
 npm install
 npx prisma generate
 npx prisma db push
